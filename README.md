@@ -55,8 +55,8 @@ A modern, responsive e-learning platform built with HTML, CSS, and JavaScript. T
 ### Installation
 
 1. **Clone the repository**
-   1- Open Github Disktop
-   2- Clone repository by URL: https://github.com/yusufshebl/FInal-Lab-Web-Dev-Project.git
+- Open Github Disktop
+- Clone repository by URL: https://github.com/yusufshebl/FInal-Lab-Web-Dev-Project.git
 
 2. **Project Structure**
    ```
