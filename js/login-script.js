@@ -1,10 +1,8 @@
-
 const loginForm = document.getElementById("loginForm");
 const messageDiv = document.getElementById("message");
 const loader = document.getElementById("loader");
 const submitBtn = document.getElementById("submitBtn");
 const userInfo = document.getElementById("userInfo");
-const debugInfo = document.getElementById("debugInfo");
 
 function fillLogin(username, password) {
      document.getElementById("username").value = username;
@@ -16,12 +14,6 @@ function showMessage(text, type) {
      messageDiv.textContent = text;
      messageDiv.className = `message ${type}`;
      messageDiv.style.display = 'block';
-}
-
-function addDebug(text) {
-     const time = new Date().toLocaleTimeString('en-US');
-     debugInfo.innerHTML = `[${time}] ${text}<br>` + debugInfo.innerHTML;
-     debugInfo.style.display = 'block';
 }
 
 function displayUserInfo(data) {
@@ -43,7 +35,6 @@ function displayUserInfo(data) {
 function logout() {
      localStorage.removeItem('userData');
      localStorage.removeItem('authToken');
-     addDebug(`User logged out`);
      location.reload();
 }
 
@@ -52,10 +43,7 @@ window.addEventListener('DOMContentLoaded', function () {
      const savedUserData = localStorage.getItem('userData');
      if (savedUserData) {
           const userData = JSON.parse(savedUserData);
-          addDebug(`User already logged in: ${userData.username}`);
           displayUserInfo(userData);
-     } else {
-          addDebug(`Page ready - Click any test account to start`);
      }
 });
 
@@ -65,15 +53,11 @@ loginForm.addEventListener("submit", async function (e) {
      const username = document.getElementById("username").value.trim();
      const password = document.getElementById("password").value.trim();
 
-     addDebug(`Login attempt: ${username}`);
-
      loader.style.display = 'block';
      submitBtn.disabled = true;
      messageDiv.style.display = 'none';
 
      try {
-          addDebug(`📤 Sending request to API...`);
-
           const response = await fetch("https://dummyjson.com/auth/login", {
                method: "POST",
                headers: {
@@ -85,37 +69,28 @@ loginForm.addEventListener("submit", async function (e) {
                })
           });
 
-          addDebug(`Response received from API - Status: ${response.status}`);
-
           const data = await response.json();
-          console.log("Full Response:", data);
-
-          addDebug(`Data received: ${JSON.stringify(data).substring(0, 100)}...`);
 
           loader.style.display = 'none';
           submitBtn.disabled = false;
 
           if (response.ok) {
                showMessage("Login successful!", "success");
-               addDebug(`Login successful - Token: ${data.token?.substring(0, 20)}...`);
 
                // Save user data to localStorage
                localStorage.setItem('userData', JSON.stringify(data));
                localStorage.setItem('authToken', data.token);
-               addDebug(`User data saved to storage`);
 
                displayUserInfo(data);
           } else {
                const errorMsg = data.message || "Invalid username or password";
                showMessage(`${errorMsg}`, "error");
-               addDebug(`Failed: ${errorMsg}`);
           }
 
      } catch (error) {
           loader.style.display = 'none';
           submitBtn.disabled = false;
           showMessage("Connection error occurred", "error");
-          addDebug(`Error: ${error.message}`);
           console.error("Error:", error);
      }
 });
