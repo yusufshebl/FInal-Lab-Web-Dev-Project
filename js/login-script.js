@@ -9,7 +9,7 @@ const debugInfo = document.getElementById("debugInfo");
 function fillLogin(username, password) {
      document.getElementById("username").value = username;
      document.getElementById("password").value = password;
-     showMessage("✅ Credentials filled - Click Login", "success");
+     showMessage("Credentials filled - Click Login", "success");
 }
 
 function showMessage(text, type) {
@@ -52,10 +52,10 @@ window.addEventListener('DOMContentLoaded', function () {
      const savedUserData = localStorage.getItem('userData');
      if (savedUserData) {
           const userData = JSON.parse(savedUserData);
-          addDebug(`✅ User already logged in: ${userData.username}`);
+          addDebug(`User already logged in: ${userData.username}`);
           displayUserInfo(userData);
      } else {
-          addDebug(`🚀 Page ready - Click any test account to start`);
+          addDebug(`Page ready - Click any test account to start`);
      }
 });
 
@@ -65,7 +65,7 @@ loginForm.addEventListener("submit", async function (e) {
      const username = document.getElementById("username").value.trim();
      const password = document.getElementById("password").value.trim();
 
-     addDebug(`🔄 Login attempt: ${username}`);
+     addDebug(`Login attempt: ${username}`);
 
      loader.style.display = 'block';
      submitBtn.disabled = true;
@@ -85,37 +85,37 @@ loginForm.addEventListener("submit", async function (e) {
                })
           });
 
-          addDebug(`📥 Response received from API - Status: ${response.status}`);
+          addDebug(`Response received from API - Status: ${response.status}`);
 
           const data = await response.json();
-          console.log("📊 Full Response:", data);
+          console.log("Full Response:", data);
 
-          addDebug(`📋 Data received: ${JSON.stringify(data).substring(0, 100)}...`);
+          addDebug(`Data received: ${JSON.stringify(data).substring(0, 100)}...`);
 
           loader.style.display = 'none';
           submitBtn.disabled = false;
 
           if (response.ok) {
-               showMessage("✅ Login successful!", "success");
-               addDebug(`✅ Login successful - Token: ${data.token?.substring(0, 20)}...`);
+               showMessage("Login successful!", "success");
+               addDebug(`Login successful - Token: ${data.token?.substring(0, 20)}...`);
 
                // Save user data to localStorage
                localStorage.setItem('userData', JSON.stringify(data));
                localStorage.setItem('authToken', data.token);
-               addDebug(`💾 User data saved to storage`);
+               addDebug(`User data saved to storage`);
 
                displayUserInfo(data);
           } else {
                const errorMsg = data.message || "Invalid username or password";
-               showMessage(`❌ ${errorMsg}`, "error");
-               addDebug(`❌ Failed: ${errorMsg}`);
+               showMessage(`${errorMsg}`, "error");
+               addDebug(`Failed: ${errorMsg}`);
           }
 
      } catch (error) {
           loader.style.display = 'none';
           submitBtn.disabled = false;
-          showMessage("⚠️ Connection error occurred", "error");
-          addDebug(`⚠️ Error: ${error.message}`);
-          console.error("❌ Error:", error);
+          showMessage("Connection error occurred", "error");
+          addDebug(`Error: ${error.message}`);
+          console.error("Error:", error);
      }
 });
